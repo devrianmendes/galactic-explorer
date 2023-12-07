@@ -1,32 +1,39 @@
 import { FormEvent, useRef, useState } from "react";
 
 import "./App.css";
-import { ApodProps, ApodResponse, getApod } from "./services/apod";
+import { ApodProps, ApodCountResponse, getApod } from "./services/apod";
 
 function App() {
-  let date = useRef<HTMLInputElement>(null);
+  const date = useRef<HTMLInputElement>(null);
   const endDate = useRef<HTMLInputElement>(null);
   const count = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState<ApodResponse[]>([])
+  const [error, setError] = useState(false);
+  const [data, setData] = useState<
+    ApodCountResponse | ApodCountResponse[] | null
+  >(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const apodData: ApodProps = {
       date: date.current!.value,
-      endDate: date.current!.value,
+      endDate: endDate.current!.value,
       count: count.current!.checked,
     };
 
-    const response = await getApod(apodData);
-    response && setData(response);
+    try {
+      setError(false);
+      const response = await getApod(apodData);
+      response && setData(response);
 
-    date.current!.value = '';
-    endDate.current!.value = '';
-    count.current!.checked = false;
+      date.current!.value = "";
+      endDate.current!.value = "";
+      count.current!.checked = false;
+    } catch (err) {
+      setError(true);
+      console.log(err);
+    }
   };
-
-  data && console.log(data)
 
   return (
     <main>
@@ -40,13 +47,26 @@ function App() {
         foi eleita como a melhor do dia:
       </p>
       <ul>
-        {data.map((eachData) => (
-          <li>
-            <img src={eachData.hdurl} alt="IMG"/>
-          </li>
-        ))}
+        {data ? (
+          Array.isArray(data) ? (
+            data.map((eachData) => (
+              <li key={eachData.title}>
+                <h3>{eachData.title}</h3>
+                <img src={eachData.url} alt={eachData.title} />
+                <p>{eachData.explanation}</p>
+              </li>
+            ))
+          ) : (
+            <>
+              <h3>{data.title}</h3>
+              <img src={data.url} alt={data.title} />
+              <p>{data.explanation}</p>
+            </>
+          )
+        ) : null}
       </ul>
       <form onSubmit={(e) => handleSubmit(e)}>
+        {error && <p>CARAI DEU RUIM</p>}
         <label htmlFor="date">Selecione o dia: </label>
         <input type="date" name="date" id="date" ref={date} />
         <p>
