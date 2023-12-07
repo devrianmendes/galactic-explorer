@@ -6,7 +6,7 @@ export type ApodProps = {
   count?: boolean;
 };
 
-export type ApodCountResponse = {
+export type ApodResponse = {
   copyright?: string;
   date: string;
   explanation: string;
@@ -17,6 +17,8 @@ export type ApodCountResponse = {
   url: string;
 };
 
+export type ApodResponseProps = ApodResponse | ApodResponse[] | null;
+
 export const getApod = async ({ date, endDate, count }: ApodProps) => {
   const BASE_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&`;
 
@@ -24,18 +26,18 @@ export const getApod = async ({ date, endDate, count }: ApodProps) => {
     date = undefined;
     endDate = undefined;
     const get = await fetch(`${BASE_URL}count=10`);
-    const response = (await get.json()) as ApodCountResponse[];
+    const response = (await get.json()) as ApodResponse[];
     return response;
   }
 
   if (date && !endDate && !count) {
     console.log(date, "date no if do date");
     const get = await fetch(`${BASE_URL}date=${date}`);
-    const response = (await get.json()) as ApodCountResponse;
+    const response = (await get.json()) as ApodResponse;
     return response;
   }
 
   const get = await fetch(`${BASE_URL}start_date=${date}&end_date=${endDate}`);
-  const response = (await get.json()) as ApodCountResponse[];
+  const response = (await get.json()) as ApodResponse[];
   return response;
 };
