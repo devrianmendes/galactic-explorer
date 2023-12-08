@@ -25,19 +25,19 @@ export const getApod = async ({ date, endDate, count }: ApodProps) => {
   if (count) {
     date = undefined;
     endDate = undefined;
-    const get = await fetch(`${BASE_URL}count=10`);
+    const get = await fetch(`${BASE_URL}count=10&thumbs=true`);
     const response = (await get.json()) as ApodResponse[];
     return response;
   }
 
   if (date && !endDate && !count) {
     console.log(date, "date no if do date");
-    const get = await fetch(`${BASE_URL}date=${date}`);
+    const get = await fetch(`${BASE_URL}date=${date}&thumbs=true`);
     const response = (await get.json()) as ApodResponse;
     return response;
   }
 
-  const get = await fetch(`${BASE_URL}start_date=${date}&end_date=${endDate}`);
+  const get = await fetch(`${BASE_URL}start_date=${date}&end_date=${endDate}&thumbs=true`);
   const response = (await get.json()) as ApodResponse[];
   return response;
 };

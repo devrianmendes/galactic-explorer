@@ -8,6 +8,4 @@ export const getNeows = async() => {
   const jsonNeows = await getNeows.json()
 
   console.log(jsonNeows)
-
-
 }

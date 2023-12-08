@@ -5,12 +5,14 @@ import {
   ApodResponseProps,
 } from "../../services/apod";
 import EachItem from "./EachItem";
+import loadingImg from '../../assets/loading.gif';
 
 const Apod = () => {
   const date = useRef<HTMLInputElement>(null);
   const endDate = useRef<HTMLInputElement>(null);
   const count = useRef<HTMLInputElement>(null);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<ApodResponseProps>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -23,6 +25,7 @@ const Apod = () => {
     };
 
     try {
+      setLoading(true)
       setError(false);
       const response = await getApod(apodData);
       response && setData(response);
@@ -30,6 +33,7 @@ const Apod = () => {
       date.current!.value = "";
       endDate.current!.value = "";
       count.current!.checked = false;
+      setLoading(false)
     } catch (err) {
       setError(true);
       console.log(err);
@@ -37,31 +41,60 @@ const Apod = () => {
   };
   return (
     <section>
-      <h1 className="text-lg font-bold">APOD - Foto Astronômica do Dia</h1>
-      <p>
+      <div className="flex flex-col text-center mb-3">
+        <h1 className="text-2xl font-bold">APOD</h1>
+        <h3 className="text-lg">Foto Astronômica do Dia</h3>
+      </div>
+      <p className="mb-2">
         Um dos mais populares serviços da NASA é o APOD (ou Foto Astronômica do
         Dia) e é tão popular quando um vídeo do Justin Bieber.
       </p>
-      <p>
-        Com ele, você pode selecionar um(ou mais) dia(s) e descobrir qual imagem
-        foi eleita como a melhor do dia:
+      <p className="mb-2">
+        Com ele, você pode selecionar um dia e ver a imagem que foi selecionada
+        pela equipe da NASA para representar essa data, ou também pode
+        selecionar uma data inicial e uma final para ver uma lista com todas as
+        imagens do período selecionado.
       </p>
-      <ul>
-        <EachItem content={data} />
-      </ul>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form className="mb-10 w-full" onSubmit={(e) => handleSubmit(e)}>
         {error && <p>CARAI DEU RUIM</p>}
-        <label htmlFor="date">Selecione o dia: </label>
-        <input type="date" name="date" id="date" ref={date} />
-        <p>
-          Você também pode selecionar uma data final para ver todas a lista de
-          imagens selecionadas:
-        </p>
-        <input type="date" name="date" id="date" ref={endDate} />
-        <input type="checkbox" name="count" id="count" ref={count} />
-        <p>Ou selecione aqui e veja aleatóriamente uma lista de 20 imagens!</p>
-        <button>Encontrar</button>
+        <div className="mb-1">
+          <label className="w-1/4 inline-block" htmlFor="date">
+            Data:{" "}
+          </label>
+          <input
+            className="w-2/4 rounded-sm text-gray-950"
+            type="date"
+            name="date"
+            id="date"
+            ref={date}
+          />
+        </div>
+        <div className="mb-1">
+          <label className="inline-block w-1/4" htmlFor="endDate">
+            Data final:{" "}
+          </label>
+          <input
+            className="w-2/4 rounded-sm text-gray-950"
+            type="date"
+            name="endDate"
+            id="endDate"
+            ref={endDate}
+          />
+        </div>
+        <div className="mb-1">
+          <input type="checkbox" name="count" id="count" ref={count} />
+          <label htmlFor="count">
+            Ou marque aqui e veja uma lista com 10 imagens aleatórias!
+          </label>
+        </div>
+        <div className="flex">
+          <button className="bg-blue-600 p-2 rounded-md mx-auto">
+            Buscar imagens
+          </button>
+        </div>
       </form>
+      {loading ? <img src={loadingImg} alt=""/> : <EachItem content={data} />}
+        
     </section>
   );
 };

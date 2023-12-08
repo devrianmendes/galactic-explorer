@@ -1,11 +1,11 @@
 import "./App.css";
-import { getNeows } from "./services/neows";
+import Apod from "./components/apod/Apod";
 
 function App() {
-  getNeows();
+  // getNeows();
   return (
-    <main className="bg-gray-950 text-gray-200 w-screen h-screen p-2">
-      {/* <Apod /> */}
+    <main className="bg-gray-950 text-gray-200 w-screen h-full p-2">
+      <Apod />
     </main>
   );
 }
