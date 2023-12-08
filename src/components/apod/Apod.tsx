@@ -5,19 +5,21 @@ import {
   ApodResponseProps,
 } from "../../services/apod";
 import EachItem from "./EachItem";
-import loadingImg from '../../assets/loading.gif';
+import loadingImg from "../../assets/loading.gif";
 
 const Apod = () => {
   const date = useRef<HTMLInputElement>(null);
   const endDate = useRef<HTMLInputElement>(null);
   const count = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<ApodResponseProps>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log(count.current!.checked);
     const apodData: ApodProps = {
       date: date.current!.value,
       endDate: endDate.current!.value,
@@ -25,17 +27,18 @@ const Apod = () => {
     };
 
     try {
-      setLoading(true)
-      setError(false);
+      setLoading(true);
+      // setError(false);
       const response = await getApod(apodData);
       response && setData(response);
 
       date.current!.value = "";
       endDate.current!.value = "";
       count.current!.checked = false;
-      setLoading(false)
+      setLoading(false);
+      setIsChecked(false);
     } catch (err) {
-      setError(true);
+      // setError(true);
       console.log(err);
     }
   };
@@ -56,7 +59,6 @@ const Apod = () => {
         imagens do período selecionado.
       </p>
       <form className="mb-10 w-full" onSubmit={(e) => handleSubmit(e)}>
-        {error && <p>CARAI DEU RUIM</p>}
         <div className="mb-1">
           <label className="w-1/4 inline-block" htmlFor="date">
             Data:{" "}
@@ -67,6 +69,7 @@ const Apod = () => {
             name="date"
             id="date"
             ref={date}
+            disabled={isChecked ? true : false}
           />
         </div>
         <div className="mb-1">
@@ -79,10 +82,17 @@ const Apod = () => {
             name="endDate"
             id="endDate"
             ref={endDate}
+            disabled={isChecked ? true : false}
           />
         </div>
         <div className="mb-1">
-          <input type="checkbox" name="count" id="count" ref={count} />
+          <input
+            type="checkbox"
+            name="count"
+            id="count"
+            ref={count}
+            onClick={() => setIsChecked(!isChecked)}
+          />
           <label htmlFor="count">
             Ou marque aqui e veja uma lista com 10 imagens aleatórias!
           </label>
@@ -93,8 +103,7 @@ const Apod = () => {
           </button>
         </div>
       </form>
-      {loading ? <img src={loadingImg} alt=""/> : <EachItem content={data} />}
-        
+      {loading ? <img src={loadingImg} alt="" /> : <EachItem content={data} />}
     </section>
   );
 };

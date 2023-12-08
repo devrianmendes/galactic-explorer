@@ -23,8 +23,6 @@ export const getApod = async ({ date, endDate, count }: ApodProps) => {
   const BASE_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&`;
 
   if (count) {
-    date = undefined;
-    endDate = undefined;
     const get = await fetch(`${BASE_URL}count=10&thumbs=true`);
     const response = (await get.json()) as ApodResponse[];
     return response;

@@ -2,7 +2,6 @@ import { FC } from "react";
 import { ApodResponseProps } from "../../services/apod";
 
 const EachItem: FC<{ content: ApodResponseProps }> = ({ content }) => {
-
   if (!content) return null;
   return (
     <>
@@ -12,9 +11,15 @@ const EachItem: FC<{ content: ApodResponseProps }> = ({ content }) => {
             {content.map((eachData) => (
               <li className="mb-6" key={eachData.title}>
                 <h3 className="text-center text-lg">{eachData.title}</h3>
-                <p className="text-center">{eachData.date.split('-').reverse().join('/')}</p>
+                <p className="text-center mb-2">
+                  {eachData.date.split("-").reverse().join("/")}
+                </p>
                 <img src={eachData.url} alt={eachData.title} />
-                {eachData.copyright ? <p className="text-xs text-gray-500">Imagem registrada por {eachData.copyright}.</p> : null}
+                {eachData.copyright ? (
+                  <p className="text-xs text-gray-500 mb-2">
+                    Créditos: {eachData.copyright}.
+                  </p>
+                ) : null}
                 <p>{eachData.explanation}</p>
               </li>
             ))}
