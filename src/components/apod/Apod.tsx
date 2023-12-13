@@ -6,6 +6,8 @@ import {
 } from "../../services/apod";
 import EachItem from "./EachItem";
 import loadingImg from "../../assets/loading.gif";
+import Title from "../Title";
+import Button from "../../UI/Button";
 
 const Apod = () => {
   const date = useRef<HTMLInputElement>(null);
@@ -16,38 +18,34 @@ const Apod = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<ApodResponseProps>(null);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleGetApod = async () => {
+    if (date.current && endDate.current && count.current) {
+      const apodData: ApodProps = {
+        date: date.current.value,
+        endDate: endDate.current.value,
+        count: count.current.checked,
+      };
 
-    console.log(count.current!.checked);
-    const apodData: ApodProps = {
-      date: date.current!.value,
-      endDate: endDate.current!.value,
-      count: count.current!.checked,
-    };
+      try {
+        setLoading(true);
+        // setError(false);
+        const response = await getApod(apodData);
+        response && setData(response);
 
-    try {
-      setLoading(true);
-      // setError(false);
-      const response = await getApod(apodData);
-      response && setData(response);
-
-      date.current!.value = "";
-      endDate.current!.value = "";
-      count.current!.checked = false;
-      setLoading(false);
-      setIsChecked(false);
-    } catch (err) {
-      // setError(true);
-      console.log(err);
+        date.current.value = "";
+        endDate.current.value = "";
+        count.current.checked = false;
+        setLoading(false);
+        setIsChecked(false);
+      } catch (err) {
+        // setError(true);
+        console.log(err);
+      }
     }
   };
   return (
     <section>
-      <div className="flex flex-col text-center mb-3">
-        <h1 className="text-2xl font-bold">APOD</h1>
-        <h3 className="text-lg">Foto Astronômica do Dia</h3>
-      </div>
+      <Title title="APOD" subtitle="Foto Astronômica do Dia" />
       <p className="mb-2">
         Um dos mais populares serviços da NASA é o APOD (ou Foto Astronômica do
         Dia) e é tão popular quando um vídeo do Justin Bieber.
@@ -58,13 +56,13 @@ const Apod = () => {
         selecionar uma data inicial e uma final para ver uma lista com todas as
         imagens do período selecionado.
       </p>
-      <form className="mb-10 w-full" onSubmit={(e) => handleSubmit(e)}>
+      <form className="mb-5 w-full" onSubmit={(e) => e.preventDefault()}>
         <div className="mb-1">
           <label className="w-1/4 inline-block" htmlFor="date">
             Data:{" "}
           </label>
           <input
-            className="w-2/4 rounded-sm text-gray-950"
+            className="w-2/4 rounded-sm text-gray-950 px-1"
             type="date"
             name="date"
             id="date"
@@ -77,7 +75,7 @@ const Apod = () => {
             Data final:{" "}
           </label>
           <input
-            className="w-2/4 rounded-sm text-gray-950"
+            className="w-2/4 rounded-sm text-gray-950 px-1"
             type="date"
             name="endDate"
             id="endDate"
@@ -85,7 +83,7 @@ const Apod = () => {
             disabled={isChecked ? true : false}
           />
         </div>
-        <div className="mb-1">
+        <div>
           <input
             type="checkbox"
             name="count"
@@ -94,13 +92,11 @@ const Apod = () => {
             onClick={() => setIsChecked(!isChecked)}
           />
           <label htmlFor="count">
-            Ou marque aqui e veja uma lista com 10 imagens aleatórias!
+            {' '}Ou marque aqui e veja uma lista com 10 imagens aleatórias!
           </label>
         </div>
         <div className="flex">
-          <button className="bg-blue-600 p-2 rounded-md mx-auto">
-            Buscar imagens
-          </button>
+          <Button content="Buscar imagens" action={handleGetApod} />
         </div>
       </form>
       {loading ? <img src={loadingImg} alt="" /> : <EachItem content={data} />}

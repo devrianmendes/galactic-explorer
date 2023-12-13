@@ -29,7 +29,6 @@ export const getApod = async ({ date, endDate, count }: ApodProps) => {
   }
 
   if (date && !endDate && !count) {
-    console.log(date, "date no if do date");
     const get = await fetch(`${BASE_URL}date=${date}&thumbs=true`);
     const response = (await get.json()) as ApodResponse;
     return response;

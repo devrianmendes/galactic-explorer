@@ -1,0 +1,7 @@
+{
+    chave aleatoria: AsteroidObject[],
+    chave aleatoria: AsteroidObject[],
+    chave aleatoria: AsteroidObject[],
+    chave aleatoria: AsteroidObject[],
+    chave aleatoria: AsteroidObject[],
+}
