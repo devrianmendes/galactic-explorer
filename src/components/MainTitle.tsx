@@ -5,7 +5,7 @@ type TitleProps = {
     subtitle: string;
 }
 
-const Title = ({title, subtitle}: TitleProps) => {
+const MainTitle = ({title, subtitle}: TitleProps) => {
   return (
     <div className="flex flex-col text-center mb-3">
       <h1 className="text-2xl font-bold">{title}</h1>
@@ -14,4 +14,4 @@ const Title = ({title, subtitle}: TitleProps) => {
   );
 };
 
-export default Title;
+export default MainTitle;

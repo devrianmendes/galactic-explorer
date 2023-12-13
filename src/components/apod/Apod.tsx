@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   type ApodProps,
   getApod,
@@ -6,7 +6,7 @@ import {
 } from "../../services/apod";
 import EachItem from "./EachItem";
 import loadingImg from "../../assets/loading.gif";
-import Title from "../Title";
+import Title from "../MainTitle";
 import Button from "../../UI/Button";
 
 const Apod = () => {
@@ -92,7 +92,8 @@ const Apod = () => {
             onClick={() => setIsChecked(!isChecked)}
           />
           <label htmlFor="count">
-            {' '}Ou marque aqui e veja uma lista com 10 imagens aleatórias!
+            {" "}
+            Ou marque aqui e veja uma lista com 10 imagens aleatórias!
           </label>
         </div>
         <div className="flex">
