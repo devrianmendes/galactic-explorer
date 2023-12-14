@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { JsonNeows, getNeows } from "../../services/neows";
+import { AsteroidObject, JsonNeows, getNeows } from "../../services/neows";
 import Title from "../MainTitle";
 import Button from "../../UI/Button";
 import EachItem from "./EachItem";
@@ -8,7 +8,8 @@ import Loading from "../loading/Loading";
 
 const Neows = () => {
   const startDate = useRef<HTMLInputElement>(null);
-  const [neowsData, setNeowsData] = useState<JsonNeows>(null);
+  const [neowsData, setNeowsData] = useState<AsteroidObject[] | null>(null);
+  const [neowsdate, setNeowsdate] = useState('')
   const [loading, setLoading] = useState(false);
 
   const handleGetNeows = async () => {
@@ -16,8 +17,10 @@ const Neows = () => {
       try {
         setLoading(true);
         const response = await getNeows(startDate.current.value);
-        setNeowsData(response);
-
+        if (response !== undefined) {
+          setNeowsdate(startDate.current.value);
+          setNeowsData(response);
+        }
         startDate.current.value = "";
         setLoading(false);
       } catch (err) {
@@ -56,7 +59,7 @@ const Neows = () => {
       <div className="flex mb-5">
         <Button content="Encontrar objetos" action={handleGetNeows} />
       </div>
-      {loading ? <Loading /> : <EachItem data={neowsData} />}
+      {loading ? <Loading /> : neowsData && <EachItem date={neowsdate} data={neowsData} />}
     </section>
   );
 };

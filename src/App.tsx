@@ -1,5 +1,6 @@
 import "./App.css";
 import Apod from "./components/apod/Apod";
+import Donki from "./components/donky/Donki";
 import Header from "./components/header/Header";
 import Intro from "./components/intro/Intro";
 import Neows from "./components/neows/Neows";
@@ -12,6 +13,7 @@ function App() {
       <Intro />
       <Apod />
       <Neows />
+      <Donki />
     </main>
   );
 }

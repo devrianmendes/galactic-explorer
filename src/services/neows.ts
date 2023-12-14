@@ -78,6 +78,5 @@ export const getNeows = async (startDate: string) => {
   );
 
   const jsonNeows: JsonNeows = await getNeows.json();
-
-  return jsonNeows;
+  if(jsonNeows) return jsonNeows.near_earth_objects[startDate];
 };

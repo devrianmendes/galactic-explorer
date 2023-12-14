@@ -1,0 +1,3 @@
+no neows, colocar pra exibir apenas um dia de objetos - feito
+
+caguei pro donky, e dar uma olhada no earth e nas apis que indica, parece ser legal
