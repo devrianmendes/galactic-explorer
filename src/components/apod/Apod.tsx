@@ -8,6 +8,7 @@ import EachItem from "./EachItem";
 import loadingImg from "../../assets/loading.gif";
 import Title from "../MainTitle";
 import Button from "../../UI/Button";
+import Paragraph from "../Paragraph";
 
 const Apod = () => {
   const date = useRef<HTMLInputElement>(null);
@@ -46,16 +47,16 @@ const Apod = () => {
   return (
     <section>
       <Title title="APOD" subtitle="Foto Astronômica do Dia" />
-      <p className="mb-2">
+      <Paragraph>
         Um dos mais populares serviços da NASA é o APOD (ou Foto Astronômica do
         Dia) e é tão popular quando um vídeo do Justin Bieber.
-      </p>
-      <p className="mb-2">
+      </Paragraph>
+      <Paragraph>
         Com ele, você pode selecionar um dia e ver a imagem que foi selecionada
         pela equipe da NASA para representar essa data, ou também pode
         selecionar uma data inicial e uma final para ver uma lista com todas as
         imagens do período selecionado.
-      </p>
+      </Paragraph>
       <form className="mb-5 w-full" onSubmit={(e) => e.preventDefault()}>
         <div className="mb-1">
           <label className="w-1/4 inline-block" htmlFor="date">

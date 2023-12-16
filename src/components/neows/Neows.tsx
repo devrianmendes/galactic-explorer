@@ -5,6 +5,7 @@ import Button from "../../UI/Button";
 import EachItem from "./EachItem";
 import SmallText from "../SmallText";
 import Loading from "../loading/Loading";
+import Paragraph from "../Paragraph";
 
 const Neows = () => {
   const startDate = useRef<HTMLInputElement>(null);
@@ -32,18 +33,18 @@ const Neows = () => {
   return (
     <section>
       <Title title="NeoWs" subtitle="Objetos Próximos a Terra" />
-      <p className="mb-2">
+      <Paragraph>
         NeoWs é um serviço de informação de asteroides próximos a terra.
-      </p>
-      <p className="mb-2">
+      </Paragraph>
+      <Paragraph>
         Com o NeoWs você pode procurar por asteroides baseados na data de maior
         aproximação da terra.
-      </p>
+      </Paragraph>
 
-      <p className="mb-2">
+      <Paragraph>
         Ao selecionar uma data, você verá uma lista de objetos que se
         aproximaram da terra nos 7 dias seguintes:
-      </p>
+      </Paragraph>
       <div className="flex mb-2">
         <label className="inline-block w-1/4" htmlFor="neowsDate">
           Data:{" "}
